@@ -1,26 +1,24 @@
-import bottle 
-import data 
+from flask import Flask, send_from_directory
+import data
 
+app = Flask(__name__)
 
-@bottle.route('/')
-def getHTML(): 
-  return bottle.static_file('page.html', root = ".")
-  
-@bottle.route('/script.js')
-def getScript(): 
-  return bottle.static_file('script.js', root = ".") 
+@app.route('/')
+def getHTML():
+    return send_from_directory('.', 'page.html')
 
-@bottle.route('/ajax.js')
-def getAjax(): 
-  return bottle.static_file('ajax.js', root = ".")
+@app.route('/script.js')
+def getScript():
+    return send_from_directory('.', 'script.js')
 
-@bottle.get('/data')
+@app.route('/ajax.js')
+def getAjax():
+    return send_from_directory('.', 'ajax.js')
+
+@app.route('/data')
 def getData():
-  dataJSON = data.betterJSONDic(14)
-  return dataJSON 
+    dataJSON = data.betterJSONDic(14)
+    return dataJSON
 
-
-bottle.run(host = "0.0.0.0", port = 8080)
-
-
-
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=8080)
